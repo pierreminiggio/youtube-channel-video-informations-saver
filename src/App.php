@@ -2,6 +2,8 @@
 
 namespace PierreMiniggio\YoutubeChannelVideoInformationsSaver;
 
+use PierreMiniggio\YoutubeChannelVideoInformationsSaver\Connection\DatabaseConnectionFactory;
+use PierreMiniggio\YoutubeChannelVideoInformationsSaver\Repository\YoutubeVideoRepository;
 use PierreMiniggio\YoutubeChannelVideoInformationsSaver\Youtube\LatestVideosFetcher as LatestYoutubeVideoFetcher;
 
 class App
@@ -12,6 +14,9 @@ class App
 
         $lastestYoutubeVideosFetcher = new LatestYoutubeVideoFetcher();
 
+        if ($hasDB = ! empty($config['db'])) {
+            $repository = new YoutubeVideoRepository((new DatabaseConnectionFactory())->makeFromConfig($config['db']));
+        }
     
         foreach ($config['groups'] as $group) {
 
@@ -20,7 +25,9 @@ class App
             $youtubeVideos = array_reverse($lastestYoutubeVideosFetcher->fetch($youtubeChannel));
 
             foreach ($youtubeVideos as $youtubeVideo) {
-                var_dump($youtubeVideo);
+                if ($hasDB) {
+                    // TODO CHECK AND SAVE
+                }
             }
         }
 

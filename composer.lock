@@ -4,8 +4,46 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f1ce61cdc130e3b5ccd0c5f61e0d3210",
-    "packages": [],
+    "content-hash": "b3e036e44212efdf60549cb77cee5782",
+    "packages": [
+        {
+            "name": "pierreminiggio/database-connection",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pierreminiggio/database-connection.git",
+                "reference": "2d18542f98f71d20078f918f4f581681c4a0ad7c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pierreminiggio/database-connection/zipball/2d18542f98f71d20078f918f4f581681c4a0ad7c",
+                "reference": "2d18542f98f71d20078f918f4f581681c4a0ad7c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PierreMiniggio\\DatabaseConnection\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Pierre MINIGGIO",
+                    "email": "pierre@miniggiodev.fr"
+                }
+            ],
+            "description": "Interact with a SQL Database",
+            "support": {
+                "issues": "https://github.com/pierreminiggio/database-connection/issues",
+                "source": "https://github.com/pierreminiggio/database-connection/tree/1.2.0"
+            },
+            "time": "2020-11-29T22:07:28+00:00"
+        }
+    ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
