@@ -23,6 +23,8 @@ class YoutubeVideoRepository
         
         if (! $queriedChannels) {
             $this->connection->exec('INSERT INTO youtube_channel (youtube_id) VALUES (:id)', ['id' => $channelYoutubeId]);
+        } else {
+            // Update channel infos if needed
         }
 
         $this->connection->stop();
@@ -34,6 +36,16 @@ class YoutubeVideoRepository
         $videoYoutubeId = $video->getId();
         $selectVideoQuery = ['SELECT id FROM youtube_video WHERE youtube_id = :id', ['id' => $videoYoutubeId]];
         $queriedVideos = $this->connection->query(...$selectVideoQuery);
+
+        $insertOrUpdateParams = [
+            'channel_id' => $channelId,
+            'id' => $videoYoutubeId,
+            'url' => $video->getUrl(),
+            'thumbnail' => $video->getThumbnail(),
+            'title' => $video->getTitle(),
+            'sanitized_title' => $video->getSanitizedTitle(),
+            'description' => $video->getDescription()
+        ];
         
         if (! $queriedVideos) {
             $this->connection->exec('INSERT INTO youtube_video (
@@ -52,15 +64,17 @@ class YoutubeVideoRepository
                 :title,
                 :sanitized_title,
                 :description
-            )', [
-                'channel_id' => $channelId,
-                'id' => $videoYoutubeId,
-                'url' => $video->getUrl(),
-                'thumbnail' => $video->getThumbnail(),
-                'title' => $video->getTitle(),
-                'sanitized_title' => $video->getSanitizedTitle(),
-                'description' => $video->getDescription()
-            ]);
+            )', $insertOrUpdateParams);
+        } else {
+            $this->connection->exec('UPDATE youtube_video SET
+                channel_id = :channel_id,
+                url = :url,
+                thumbnail = :thumbnail,
+                title = :title,
+                sanitized_title = :sanitized_title,
+                description = :description
+            WHERE youtube_id = :id
+            ', $insertOrUpdateParams);
         }
 
         $this->connection->stop();
