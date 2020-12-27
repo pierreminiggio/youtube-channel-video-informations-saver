@@ -1,5 +1,12 @@
 # youtube-channel-video-informations-saver
 
+- Copy Config :
+```
+cp ./config_example.php config.php
+```
+
+- Update config
+
 Tables Needed :
 
 ```sql
