@@ -1,0 +1,21 @@
+{
+    "name": "pierreminiggio/youtube-channel-video-informations-saver",
+    "authors": [
+        {
+            "name": "Pierre MINIGGIO",
+            "email": "pierre@miniggiodev.fr"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "PierreMiniggio\\YoutubeChannelVideoInformationsSaver\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "require": {
+        "php": ">=8.0.0"
+    },
+    "require-dev": {}
+}
