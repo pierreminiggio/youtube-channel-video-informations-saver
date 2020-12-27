@@ -45,7 +45,7 @@ class YoutubeVideo
         return $this->description;
     }
 
-    private function getSanitizedTitle(): string
+    public function getSanitizedTitle(): string
     {
         return str_replace('.', '', mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $this->title));
     }

@@ -6,7 +6,7 @@ use PierreMiniggio\DatabaseConnection\DatabaseConnection;
 
 class DatabaseConnectionFactory
 {
-    public function makeFromConfig($config): DatabaseConnection
+    public function makeFromConfig(array $config): DatabaseConnection
     {
         
         return new DatabaseConnection(
