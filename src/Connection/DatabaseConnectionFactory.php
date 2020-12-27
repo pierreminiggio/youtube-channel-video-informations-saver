@@ -14,6 +14,7 @@ class DatabaseConnectionFactory
             $config['database'],
             $config['username'],
             $config['password'],
+            DatabaseConnection::UTF8_MB4
         );
     }
 }

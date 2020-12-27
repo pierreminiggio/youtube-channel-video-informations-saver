@@ -26,7 +26,7 @@ class App
 
             foreach ($youtubeVideos as $youtubeVideo) {
                 if ($hasDB) {
-                    // TODO CHECK AND SAVE
+                    $repository->addIfMissing($youtubeVideo);
                 }
             }
         }

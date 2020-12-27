@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "pierreminiggio/database-connection",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pierreminiggio/database-connection.git",
-                "reference": "2d18542f98f71d20078f918f4f581681c4a0ad7c"
+                "reference": "ff55d9d7ea01f29855b2f8dba8e56ded661188ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pierreminiggio/database-connection/zipball/2d18542f98f71d20078f918f4f581681c4a0ad7c",
-                "reference": "2d18542f98f71d20078f918f4f581681c4a0ad7c",
+                "url": "https://api.github.com/repos/pierreminiggio/database-connection/zipball/ff55d9d7ea01f29855b2f8dba8e56ded661188ac",
+                "reference": "ff55d9d7ea01f29855b2f8dba8e56ded661188ac",
                 "shasum": ""
             },
             "require": {
@@ -39,9 +39,9 @@
             "description": "Interact with a SQL Database",
             "support": {
                 "issues": "https://github.com/pierreminiggio/database-connection/issues",
-                "source": "https://github.com/pierreminiggio/database-connection/tree/1.2.0"
+                "source": "https://github.com/pierreminiggio/database-connection/tree/1.2.1"
             },
-            "time": "2020-11-29T22:07:28+00:00"
+            "time": "2020-12-27T17:59:34+00:00"
         }
     ],
     "packages-dev": [],
