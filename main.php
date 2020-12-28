@@ -6,6 +6,6 @@ use PierreMiniggio\YoutubeChannelVideoInformationsSaver\App;
 
 try {
     return (new App())->run();
-} catch (Exception $e) {
+} catch (Throwable $e) {
     echo get_class($e) . ' : ' . $e->getMessage();
 }
