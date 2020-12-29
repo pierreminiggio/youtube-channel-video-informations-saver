@@ -59,8 +59,6 @@ class App
         
         foreach ($channelIds as $channelId) {
 
-        
-
             echo PHP_EOL . PHP_EOL . 'Channel : ' . $channelId;
 
             $channelVideosCurl = curl_init();
