@@ -3,6 +3,7 @@
 namespace PierreMiniggio\YoutubeChannelVideoInformationsSaver;
 
 use PierreMiniggio\YoutubeChannelVideoInformationsSaver\Connection\DatabaseConnectionFactory;
+use PierreMiniggio\YoutubeChannelVideoInformationsSaver\Repository\YoutubeChannelRepository;
 use PierreMiniggio\YoutubeChannelVideoInformationsSaver\Repository\YoutubeVideoRepository;
 use PierreMiniggio\YoutubeChannelVideoInformationsSaver\Youtube\YoutubeVideo;
 
@@ -26,9 +27,10 @@ class App
             return $code;
         }
 
-        $repository = new YoutubeVideoRepository((new DatabaseConnectionFactory())->makeFromConfig($config['db']));
+        $databaseConnection = (new DatabaseConnectionFactory())->makeFromConfig($config['db']);
+        $channelRepository = new YoutubeChannelRepository($databaseConnection);
+        $videoRepository = new YoutubeVideoRepository($databaseConnection);
 
-        //////
         $accessTokenCurl = curl_init();
         curl_setopt_array($accessTokenCurl, [
             CURLOPT_RETURNTRANSFER => 1,
@@ -53,67 +55,71 @@ class App
             return $code;
         }
 
-        $channelId = 'UCKbunxMnqxM8UFMEYF79CUQ';
-        echo PHP_EOL . PHP_EOL . 'Channel : ' . $channelId;
-
-        $channelVideosCurl = curl_init();
-        curl_setopt_array($channelVideosCurl, [
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_URL => 'https://www.googleapis.com/youtube/v3/search?channelId=' . $channelId . '&part=id&order=date&maxResults=20'
-        ]);
-        $authorization = "Authorization: Bearer " . $accessTokenJsonResponse->access_token;
-        curl_setopt($channelVideosCurl, CURLOPT_HTTPHEADER, ['Content-Type: application/json' , $authorization]);
-
-        $channelVideosCurlResult = curl_exec($channelVideosCurl);
-        $channelVideosJsonResponse = json_decode($channelVideosCurlResult, true);
-
-        if (! empty($channelVideosJsonResponse['error'])) {
-            echo 'Error ' . $channelVideosJsonResponse['error']['code'] . ': ' . $channelVideosJsonResponse['error']['message'];
-
-            return $code;
-        }
-
-        $videoIds = array_map(
-            fn ($channelVideoJsonResponse) => $channelVideoJsonResponse['id']['videoId'],
-            $channelVideosJsonResponse['items']
-        );
+        $channelIds = $channelRepository->findAll();
         
-        foreach ($videoIds as $videoId) {
+        foreach ($channelIds as $channelId) {
 
-            echo PHP_EOL . 'Inserting/updating ' . $videoId . ' from channel ' . $channelId . ' ...';
+        
 
-            $videoCurl = curl_init();
-            curl_setopt_array($videoCurl, [
+            echo PHP_EOL . PHP_EOL . 'Channel : ' . $channelId;
+
+            $channelVideosCurl = curl_init();
+            curl_setopt_array($channelVideosCurl, [
                 CURLOPT_RETURNTRANSFER => 1,
-                CURLOPT_URL => 'https://www.googleapis.com/youtube/v3/videos?id=' . $videoId . '&part=snippet'
+                CURLOPT_URL => 'https://www.googleapis.com/youtube/v3/search?channelId=' . $channelId . '&part=id&order=date&maxResults=20'
             ]);
             $authorization = "Authorization: Bearer " . $accessTokenJsonResponse->access_token;
-            curl_setopt($videoCurl, CURLOPT_HTTPHEADER, ['Content-Type: application/json' , $authorization]);
+            curl_setopt($channelVideosCurl, CURLOPT_HTTPHEADER, ['Content-Type: application/json' , $authorization]);
 
-            $videoCurlResult = curl_exec($videoCurl);
+            $channelVideosCurlResult = curl_exec($channelVideosCurl);
+            $channelVideosJsonResponse = json_decode($channelVideosCurlResult, true);
 
-            $videoJsonResponse = json_decode($videoCurlResult, true);
-
-            if (! empty($videoJsonResponse['error'])) {
-                echo 'Error ' . $videoJsonResponse['error']['code'] . ': ' . $videoJsonResponse['error']['message'];
+            if (! empty($channelVideosJsonResponse['error'])) {
+                echo 'Error ' . $channelVideosJsonResponse['error']['code'] . ': ' . $channelVideosJsonResponse['error']['message'];
 
                 return $code;
             }
 
-            $snippet = $videoJsonResponse['items'][0]['snippet'];
-            $youtubeVideo = new YoutubeVideo(
-                $channelId,
-                $videoId,
-                'https://www.youtube.com/watch?v=' . $videoId,
-                $snippet['thumbnails']['high']['url'],
-                $snippet['title'],
-                $snippet['description']
+            $videoIds = array_map(
+                fn ($channelVideoJsonResponse) => $channelVideoJsonResponse['id']['videoId'],
+                $channelVideosJsonResponse['items']
             );
-            $repository->addIfMissing($youtubeVideo);
-            echo PHP_EOL . $youtubeVideo->getId() . ' inserted/updated !';
-        }
+            
+            foreach ($videoIds as $videoId) {
 
-        /////
+                echo PHP_EOL . 'Inserting/updating ' . $videoId . ' from channel ' . $channelId . ' ...';
+
+                $videoCurl = curl_init();
+                curl_setopt_array($videoCurl, [
+                    CURLOPT_RETURNTRANSFER => 1,
+                    CURLOPT_URL => 'https://www.googleapis.com/youtube/v3/videos?id=' . $videoId . '&part=snippet'
+                ]);
+                $authorization = "Authorization: Bearer " . $accessTokenJsonResponse->access_token;
+                curl_setopt($videoCurl, CURLOPT_HTTPHEADER, ['Content-Type: application/json' , $authorization]);
+
+                $videoCurlResult = curl_exec($videoCurl);
+
+                $videoJsonResponse = json_decode($videoCurlResult, true);
+
+                if (! empty($videoJsonResponse['error'])) {
+                    echo 'Error ' . $videoJsonResponse['error']['code'] . ': ' . $videoJsonResponse['error']['message'];
+
+                    return $code;
+                }
+
+                $snippet = $videoJsonResponse['items'][0]['snippet'];
+                $youtubeVideo = new YoutubeVideo(
+                    $channelId,
+                    $videoId,
+                    'https://www.youtube.com/watch?v=' . $videoId,
+                    $snippet['thumbnails']['high']['url'],
+                    $snippet['title'],
+                    $snippet['description']
+                );
+                $videoRepository->addIfMissing($youtubeVideo);
+                echo PHP_EOL . $youtubeVideo->getId() . ' inserted/updated !';
+            }
+        }
 
         echo PHP_EOL . PHP_EOL . 'Done !';
 
