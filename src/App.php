@@ -64,7 +64,7 @@ class App
             $channelVideosCurl = curl_init();
             curl_setopt_array($channelVideosCurl, [
                 CURLOPT_RETURNTRANSFER => 1,
-                CURLOPT_URL => 'https://www.googleapis.com/youtube/v3/search?channelId=' . $channelId . '&part=id&order=date&maxResults=30'
+                CURLOPT_URL => 'https://www.googleapis.com/youtube/v3/search?channelId=' . $channelId . '&part=id&order=date&maxResults=3'
             ]);
             $authorization = "Authorization: Bearer " . $accessTokenJsonResponse->access_token;
             curl_setopt($channelVideosCurl, CURLOPT_HTTPHEADER, ['Content-Type: application/json' , $authorization]);
