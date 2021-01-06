@@ -44,7 +44,8 @@ class YoutubeVideoRepository
             'thumbnail' => $video->getThumbnail(),
             'title' => $video->getTitle(),
             'sanitized_title' => $video->getSanitizedTitle(),
-            'description' => $video->getDescription()
+            'description' => $video->getDescription(),
+            'tags' => json_encode($video->getTags())
         ];
         
         if (! $queriedVideos) {
@@ -55,7 +56,8 @@ class YoutubeVideoRepository
                 thumbnail,
                 title,
                 sanitized_title,
-                description
+                description,
+                tags
             ) VALUES (
                 :channel_id,
                 :id,
@@ -63,7 +65,8 @@ class YoutubeVideoRepository
                 :thumbnail,
                 :title,
                 :sanitized_title,
-                :description
+                :description,
+                :tags
             )', $insertOrUpdateParams);
         } else {
             $this->connection->exec('UPDATE youtube_video SET
@@ -72,7 +75,8 @@ class YoutubeVideoRepository
                 thumbnail = :thumbnail,
                 title = :title,
                 sanitized_title = :sanitized_title,
-                description = :description
+                description = :description,
+                tags = :tags
             WHERE youtube_id = :id
             ', $insertOrUpdateParams);
         }

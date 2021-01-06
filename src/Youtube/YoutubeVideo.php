@@ -11,7 +11,8 @@ class YoutubeVideo
         private string $url,
         private string $thumbnail,
         private string $title,
-        private string $description
+        private string $description,
+        private array $tags
     )
     {}
 
@@ -43,6 +44,11 @@ class YoutubeVideo
     public function getDescription(): string
     {
         return $this->description;
+    }
+
+    public function getTags(): array
+    {
+        return $this->tags;
     }
 
     public function getSanitizedTitle(): string

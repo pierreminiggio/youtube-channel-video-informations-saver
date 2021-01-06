@@ -112,7 +112,8 @@ class App
                     'https://www.youtube.com/watch?v=' . $videoId,
                     $snippet['thumbnails']['high']['url'],
                     $snippet['title'],
-                    $snippet['description']
+                    $snippet['description'],
+                    $snippet['tags']
                 );
                 $videoRepository->addIfMissing($youtubeVideo);
                 echo PHP_EOL . $youtubeVideo->getId() . ' inserted/updated !';
