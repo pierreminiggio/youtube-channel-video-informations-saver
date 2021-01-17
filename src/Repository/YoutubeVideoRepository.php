@@ -2,40 +2,47 @@
 
 namespace PierreMiniggio\YoutubeChannelVideoInformationsSaver\Repository;
 
-use PierreMiniggio\DatabaseConnection\DatabaseConnection;
+use PierreMiniggio\DatabaseFetcher\DatabaseFetcher;
 use PierreMiniggio\YoutubeChannelVideoInformationsSaver\Youtube\YoutubeVideo;
 
 class YoutubeVideoRepository
 {
 
     public function __construct(
-        private DatabaseConnection $connection,
+        private DatabaseFetcher $fetcher,
     )
     {}
 
     public function addIfMissing(YoutubeVideo $video): void
     {
-        $this->connection->start();
 
         $channelYoutubeId = $video->getChannel();
-        $selectChannelQuery = ['SELECT id FROM youtube_channel WHERE youtube_id = :id', ['id' => $channelYoutubeId]];
-        $queriedChannels = $this->connection->query(...$selectChannelQuery);
+        
+        $selectChannelQuery = [
+            $this->fetcher->createQuery('youtube_channel')->select('id')->where('youtube_id = :id'),
+            ['id' => $channelYoutubeId]
+        ];
+        $queriedChannels = $this->fetcher->query(...$selectChannelQuery);
         
         if (! $queriedChannels) {
-            $this->connection->exec('INSERT INTO youtube_channel (youtube_id) VALUES (:id)', ['id' => $channelYoutubeId]);
+            $this->fetcher->exec(
+                $this->fetcher->createQuery('youtube_channel')->insertInto('youtube_id', ':id'),
+                ['id' => $channelYoutubeId]
+            );
         } else {
             // Update channel infos if needed
         }
 
-        $this->connection->stop();
-        $this->connection->start();
-
-        $queriedChannels = $this->connection->query(...$selectChannelQuery);
+        $queriedChannels = $this->fetcher->query(...$selectChannelQuery);
         $channelId = (int) $queriedChannels[0]['id'];
 
         $videoYoutubeId = $video->getId();
-        $selectVideoQuery = ['SELECT id FROM youtube_video WHERE youtube_id = :id', ['id' => $videoYoutubeId]];
-        $queriedVideos = $this->connection->query(...$selectVideoQuery);
+        
+        $selectVideoQuery = [
+            $this->fetcher->createQuery('youtube_video')->select('id')->where('youtube_id = :id'),
+            ['id' => $videoYoutubeId]
+        ];
+        $queriedVideos = $this->fetcher->query(...$selectVideoQuery);
 
         $insertOrUpdateParams = [
             'channel_id' => $channelId,
@@ -49,38 +56,33 @@ class YoutubeVideoRepository
         ];
         
         if (! $queriedVideos) {
-            $this->connection->exec('INSERT INTO youtube_video (
-                channel_id,
-                youtube_id,
-                url,
-                thumbnail,
-                title,
-                sanitized_title,
-                description,
-                tags
-            ) VALUES (
-                :channel_id,
-                :id,
-                :url,
-                :thumbnail,
-                :title,
-                :sanitized_title,
-                :description,
-                :tags
-            )', $insertOrUpdateParams);
+            $this->fetcher->exec(
+                $this->fetcher
+                    ->createQuery('youtube_video')
+                    ->insertInto(
+                        'channel_id,youtube_id,url,thumbnail,title,sanitized_title,description,tags',
+                        ':channel_id,:id,:url,:thumbnail,:title,:sanitized_title,:description,:tags'
+                    )
+                ,
+                $insertOrUpdateParams
+            );
         } else {
-            $this->connection->exec('UPDATE youtube_video SET
-                channel_id = :channel_id,
-                url = :url,
-                thumbnail = :thumbnail,
-                title = :title,
-                sanitized_title = :sanitized_title,
-                description = :description,
-                tags = :tags
-            WHERE youtube_id = :id
-            ', $insertOrUpdateParams);
+            $this->fetcher->exec(
+                $this->fetcher
+                    ->createQuery('youtube_video')
+                    ->update('
+                        channel_id = :channel_id,
+                        url = :url,
+                        thumbnail = :thumbnail,
+                        title = :title,
+                        sanitized_title = :sanitized_title,
+                        description = :description,
+                        tags = :tags'
+                    )
+                    ->where('youtube_id = :id')
+                ,
+                $insertOrUpdateParams
+            );
         }
-
-        $this->connection->stop();
     }
 }

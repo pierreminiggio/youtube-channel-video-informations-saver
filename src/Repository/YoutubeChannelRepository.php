@@ -2,13 +2,13 @@
 
 namespace PierreMiniggio\YoutubeChannelVideoInformationsSaver\Repository;
 
-use PierreMiniggio\DatabaseConnection\DatabaseConnection;
+use PierreMiniggio\DatabaseFetcher\DatabaseFetcher;
 
 class YoutubeChannelRepository
 {
 
     public function __construct(
-        private DatabaseConnection $connection,
+        private DatabaseFetcher $fetcher,
     )
     {}
 
@@ -17,9 +17,10 @@ class YoutubeChannelRepository
      */
     public function findAll(): array
     {
-        $this->connection->start();
-        $entries = $this->connection->query('SELECT youtube_id FROM youtube_channel', []);
-        $this->connection->stop();
+        $entries = $this->fetcher->query(
+            $this->fetcher->createQuery('youtube_channel')
+                ->select('youtube_id')
+        );
 
         return array_map(fn ($entry) => $entry['youtube_id'], $entries);
     }

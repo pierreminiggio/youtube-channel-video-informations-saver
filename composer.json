@@ -16,6 +16,6 @@
     },
     "require": {
         "php": ">=8.0.0",
-        "pierreminiggio/database-connection": "^1.2"
+        "pierreminiggio/database-fetcher": "^1.0"
     }
 }

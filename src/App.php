@@ -2,6 +2,7 @@
 
 namespace PierreMiniggio\YoutubeChannelVideoInformationsSaver;
 
+use PierreMiniggio\DatabaseFetcher\DatabaseFetcher;
 use PierreMiniggio\YoutubeChannelVideoInformationsSaver\Connection\DatabaseConnectionFactory;
 use PierreMiniggio\YoutubeChannelVideoInformationsSaver\Repository\YoutubeChannelRepository;
 use PierreMiniggio\YoutubeChannelVideoInformationsSaver\Repository\YoutubeVideoRepository;
@@ -27,9 +28,9 @@ class App
             return $code;
         }
 
-        $databaseConnection = (new DatabaseConnectionFactory())->makeFromConfig($config['db']);
-        $channelRepository = new YoutubeChannelRepository($databaseConnection);
-        $videoRepository = new YoutubeVideoRepository($databaseConnection);
+        $databaseFetcher = new DatabaseFetcher((new DatabaseConnectionFactory())->makeFromConfig($config['db']));
+        $channelRepository = new YoutubeChannelRepository($databaseFetcher);
+        $videoRepository = new YoutubeVideoRepository($databaseFetcher);
 
         $accessTokenCurl = curl_init();
         curl_setopt_array($accessTokenCurl, [
