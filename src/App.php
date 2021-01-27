@@ -114,7 +114,7 @@ class App
                     $snippet['thumbnails']['high']['url'],
                     $snippet['title'],
                     $snippet['description'],
-                    $snippet['tags']
+                    $snippet['tags'] ?? []
                 );
                 $videoRepository->addIfMissing($youtubeVideo);
                 echo PHP_EOL . $youtubeVideo->getId() . ' inserted/updated !';
