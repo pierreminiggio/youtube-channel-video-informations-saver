@@ -16,6 +16,7 @@
     },
     "require": {
         "php": ">=8.0.0",
-        "pierreminiggio/database-fetcher": "^1.0"
+        "pierreminiggio/database-fetcher": "^1.0",
+        "pierreminiggio/google-api-get-access-token-from-refresh-token": "^1.1"
     }
 }

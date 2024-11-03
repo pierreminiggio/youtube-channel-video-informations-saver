@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "92a9e3f62e82b84dafb6026f2031d77a",
+    "content-hash": "810e0460834a96f960608bfde32deffc",
     "packages": [
         {
             "name": "neutronstars/database-sql",
@@ -124,6 +124,43 @@
                 "source": "https://github.com/pierreminiggio/database-fetcher/tree/1.0.0"
             },
             "time": "2021-01-17T10:03:16+00:00"
+        },
+        {
+            "name": "pierreminiggio/google-api-get-access-token-from-refresh-token",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pierreminiggio/php-google-api-get-access-token-from-refresh-token.git",
+                "reference": "b5f9b47a26adfd6bfe59d5f37aab87f45319f1ef"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pierreminiggio/php-google-api-get-access-token-from-refresh-token/zipball/b5f9b47a26adfd6bfe59d5f37aab87f45319f1ef",
+                "reference": "b5f9b47a26adfd6bfe59d5f37aab87f45319f1ef",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2 || ^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PierreMiniggio\\GoogleTokenRefresher\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Pierre MINIGGIO",
+                    "email": "pierre@miniggiodev.fr"
+                }
+            ],
+            "description": "Get Google API Access Token using your Refresh Token",
+            "support": {
+                "issues": "https://github.com/pierreminiggio/php-google-api-get-access-token-from-refresh-token/issues",
+                "source": "https://github.com/pierreminiggio/php-google-api-get-access-token-from-refresh-token/tree/1.1.0"
+            },
+            "time": "2021-04-20T19:31:14+00:00"
         }
     ],
     "packages-dev": [],
