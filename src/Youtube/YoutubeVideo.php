@@ -2,53 +2,21 @@
 
 namespace PierreMiniggio\YoutubeChannelVideoInformationsSaver\Youtube;
 
-class YoutubeVideo
+use PierreMiniggio\YoutubeAPI\YoutubeVideo as YoutubeAPIYoutubeVideo;
+
+class YoutubeVideo extends YoutubeAPIYoutubeVideo
 {
-
-    public function __construct(
-        private string $channel,
-        private string $id,
-        private string $url,
-        private string $thumbnail,
-        private string $title,
-        private string $description,
-        private array $tags
-    )
-    {}
-
-    public function getChannel(): string
+    public static function makeFromYoutubeAPIYoutubeVideo(YoutubeAPIYoutubeVideo $youtubeAPIYoutubeVideo): self
     {
-        return $this->channel;
-    }
-
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function getUrl(): string
-    {
-        return $this->url;
-    }
-
-    public function getThumbnail(): string
-    {
-        return $this->thumbnail;
-    }
-
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    public function getTags(): array
-    {
-        return $this->tags;
+        return new self(
+            $youtubeAPIYoutubeVideo->getChannel(),
+            $youtubeAPIYoutubeVideo->getId(),
+            $youtubeAPIYoutubeVideo->getUrl(),
+            $youtubeAPIYoutubeVideo->getThumbnail(),
+            $youtubeAPIYoutubeVideo->getTitle(),
+            $youtubeAPIYoutubeVideo->getDescription(),
+            $youtubeAPIYoutubeVideo->getTags()
+        );
     }
 
     public function getSanitizedTitle(): string

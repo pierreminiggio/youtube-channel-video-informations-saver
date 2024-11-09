@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "810e0460834a96f960608bfde32deffc",
+    "content-hash": "617cd9cf47e5f92071b283dd28ef2e74",
     "packages": [
         {
             "name": "neutronstars/database-sql",
@@ -161,6 +161,43 @@
                 "source": "https://github.com/pierreminiggio/php-google-api-get-access-token-from-refresh-token/tree/1.1.0"
             },
             "time": "2021-04-20T19:31:14+00:00"
+        },
+        {
+            "name": "pierreminiggio/youtube-api-wrapper",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pierreminiggio/php-youtube-api-wrapper.git",
+                "reference": "28f673f25369b6de8937fc9e752ce9034b7cc725"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pierreminiggio/php-youtube-api-wrapper/zipball/28f673f25369b6de8937fc9e752ce9034b7cc725",
+                "reference": "28f673f25369b6de8937fc9e752ce9034b7cc725",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PierreMiniggio\\YoutubeAPI\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Pierre MINIGGIO",
+                    "email": "pierre@miniggiodev.fr"
+                }
+            ],
+            "description": "Youtube API Wrapper",
+            "support": {
+                "issues": "https://github.com/pierreminiggio/php-youtube-api-wrapper/issues",
+                "source": "https://github.com/pierreminiggio/php-youtube-api-wrapper/tree/1.0.2"
+            },
+            "time": "2024-11-09T22:58:34+00:00"
         }
     ],
     "packages-dev": [],
